@@ -1,6 +1,11 @@
 spring:
   application:
     name: greeting-service
+  config:
+    import: optional:configserver:http://localhost:8888/
+  cloud:
+    config:
+      profile: qa
 management:
   endpoints:
     web:
@@ -8,5 +13,7 @@ management:
         include:
           - '*'
 greeting-service:
-  greeting: "Ol√°"
+  greeting: "Ol·"
   default-value: "Mundo"
+server:
+  port: 8080
