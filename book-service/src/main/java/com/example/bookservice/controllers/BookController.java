@@ -1,6 +1,7 @@
 package com.example.bookservice.controllers;
 
 import com.example.bookservice.model.Book;
+import com.example.bookservice.proxy.CambioProxy;
 import com.example.bookservice.repositorys.BookRespository;
 import com.example.bookservice.response.Cambio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class BookController {
     private Environment environment;
 
     @Autowired
+    private CambioProxy proxy;
+
+    @Autowired
     private BookRespository respository;
 
     @GetMapping(value = "/{id}/{currency}")
@@ -32,20 +36,11 @@ public class BookController {
         var book = respository.getById(id);
         if (book == null) throw new RuntimeException("Book not found");
 
-        HashMap<String, String> params = new HashMap<>();
-        params.put("amount", book.getPrice().toString());
-        params.put("from", "USD");
-        params.put("to", currency);
 
-        var response = new RestTemplate().getForEntity(
-                "http://localhost:8000/cambio-service/{amount}/{from}/{to}",
-                Cambio.class,
-                params);
-
-        var cambio = response.getBody();
+        var cambio = proxy.getCambio(book.getPrice(), "USD", currency);
 
         var port = environment.getProperty("local.server.port");
-        book.setEnvironment(port);
+        book.setEnvironment(port + "FEIGN");
         book.setPrice((cambio.getConvertedValue()));
         return book;
     }
