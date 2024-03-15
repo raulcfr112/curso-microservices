@@ -32,7 +32,7 @@ public class BookController {
     public Book findBook(
             @PathVariable("id") Long id,
             @PathVariable("currency") String currency
-    ){
+    ) {
         var book = respository.getById(id);
         if (book == null) throw new RuntimeException("Book not found");
 
@@ -40,7 +40,7 @@ public class BookController {
         var cambio = proxy.getCambio(book.getPrice(), "USD", currency);
 
         var port = environment.getProperty("local.server.port");
-        book.setEnvironment(port + "FEIGN");
+        book.setEnvironment("Book port:" + port + "Cambio port " + cambio.getEnvironment());
         book.setPrice((cambio.getConvertedValue()));
         return book;
     }
