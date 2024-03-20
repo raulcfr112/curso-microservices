@@ -20,6 +20,10 @@ spring:
     schemas: cambio_service
     user: root
     password: Senha@123
+  management:
+    tracing:
+      sampling:
+        probability: 1.0
 eureka:
   client:
     service-url:

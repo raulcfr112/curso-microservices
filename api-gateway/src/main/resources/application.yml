@@ -5,6 +5,10 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
 spring:
+  management:
+    tracing:
+      sampling:
+        probability: 1.0
   application:
     name: api-gateway
   cloud:
