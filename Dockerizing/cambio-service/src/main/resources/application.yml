@@ -23,10 +23,10 @@ spring:
     url: jdbc:mysql://localhost:3306/cambio_service?useTimezone=true&serverTimezone=UTC
     user: root
     password: Senha@123
-  management:
-    tracing:
-      sampling:
-        probability: 1.0
+management:
+  tracing:
+    sampling:
+      probability: 1.0
 springdoc:
   api-docs:
     path: cambio-service/v3/api-docs
